@@ -1,6 +1,6 @@
 pkgsSet:
 { system, name ? "site", builder-src, website-src, websiteBuildInputs ? [ ]
-, env ? { } }:
+, websiteShellHook ? "" }:
 let
   pkgs = pkgsSet.${system};
   builder = pkgs.haskellPackages.callCabal2nix "${name}" "${builder-src}" { };
@@ -10,7 +10,7 @@ let
 in rec {
   packages = {
     inherit builder;
-    website = pkgs.stdenv.mkDerivation ({
+    website = pkgs.stdenv.mkDerivation {
       inherit name;
       src = website-src;
       buildInputs = [ builder ] ++ websiteBuildInputs;
@@ -26,8 +26,9 @@ in rec {
         mkdir -p $out/
         cp -R _site/* $out/
       '';
+      shellHook = websiteShellHook;
       dontStrip = true;
-    } // env);
+    };
   };
   defaultPackage = packages.website;
   devShell = pkgs.mkShell {
