@@ -10,7 +10,7 @@ let
 in rec {
   packages = {
     inherit builder;
-    website = pkgs.stdenv.mkDerivation {
+    website = pkgs.stdenv.mkDerivation ({
       inherit name;
       src = website-src;
       buildInputs = [ builder ] ++ websiteBuildInputs;
@@ -27,7 +27,7 @@ in rec {
         cp -R _site/* $out/
       '';
       dontStrip = true;
-    } // env;
+    } // env);
   };
   defaultPackage = packages.website;
   devShell = pkgs.mkShell {
