@@ -1,6 +1,5 @@
 pkgsSet:
-{ system, name ? "site", builder-src, website-src, websiteBuildInputs ? [ ]
-, websiteShellHook ? "" }:
+{ system, name ? "site", builder-src, website-src, websiteBuildInputs ? [ ] }:
 let
   pkgs = pkgsSet.${system};
   builder = pkgs.haskellPackages.callCabal2nix "${name}" "${builder-src}" { };
@@ -17,9 +16,9 @@ in rec {
       LANG = "en_US.UTF-8";
       LC_ALL = "en_US.UTF-8";
       LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
-      # don't look in caches for this; speeds things up a little
-      allowSubstitutes = false;
+      # TeXmacs relies on being able to write to $HOME/.TeXmacs
       buildPhase = ''
+        export HOME=$(pwd)
         ${name} build
       '';
       installPhase = ''
