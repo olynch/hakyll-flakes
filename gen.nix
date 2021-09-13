@@ -25,7 +25,6 @@ in rec {
         mkdir -p $out/
         cp -R _site/* $out/
       '';
-      shellHook = websiteShellHook;
       dontStrip = true;
     };
   };
