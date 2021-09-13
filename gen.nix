@@ -18,7 +18,7 @@ in rec {
       LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
       # TeXmacs relies on being able to write to $HOME/.TeXmacs
       buildPhase = ''
-        export HOME=$(pwd)
+        declare -x HOME="$(pwd)"
         ${name} build
       '';
       installPhase = ''
