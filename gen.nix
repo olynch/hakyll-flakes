@@ -1,8 +1,9 @@
 pkgsSet:
-{ system, name ? "site", src, websiteBuildInputs ? [ ], env ? { } }:
+{ system, name ? "site", builder-src, website-src, websiteBuildInputs ? [ ]
+, env ? { } }:
 let
   pkgs = pkgsSet.${system};
-  builder = pkgs.haskellPackages.callCabal2nix "${name}" "${src}" { };
+  builder = pkgs.haskellPackages.callCabal2nix "${name}" "${builder-src}" { };
   haskell-env = pkgs.haskellPackages.ghcWithHoogle (hp:
     with hp;
     [ haskell-language-server cabal-install ] ++ builder.buildInputs);
@@ -10,7 +11,8 @@ in rec {
   packages = {
     inherit builder;
     website = pkgs.stdenv.mkDerivation {
-      inherit name src;
+      inherit name;
+      src = website-src;
       buildInputs = [ builder ] ++ websiteBuildInputs;
       LANG = "en_US.UTF-8";
       LC_ALL = "en_US.UTF-8";
