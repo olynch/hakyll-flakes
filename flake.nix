@@ -29,15 +29,16 @@
       # taken from nixpkgs flake.nix
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
 
-      # overlay = (self: super: {
-      #   haskellPackages = super.haskellPackages.extend (hsSelf: hsSuper: {
-      #     hakyll = hsSuper.callCabal2nix "hakyll" "${hakyll-src}" { };
-      #     hakyll-sass =
-      #       hsSuper.callCabal2nix "hakyll-sass" "${hakyll-sass-src}" { };
-      #   });
-      # });
+      overlay = (self: super:
+        {
+          # haskellPackages = super.haskellPackages.extend (hsSelf: hsSuper: {
+          #   hakyll = hsSuper.callCabal2nix "hakyll" "${hakyll-src}" { };
+          #   hakyll-sass =
+          #     hsSuper.callCabal2nix "hakyll-sass" "${hakyll-sass-src}" { };
+          # });
+        });
 
-      overlays = [ ];
+      overlays = [ overlay ];
 
       # this is just nixpkgs.legacyPackages but with an overlay
       pkgs =
