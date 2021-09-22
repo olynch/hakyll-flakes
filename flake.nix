@@ -37,7 +37,7 @@
       #   });
       # });
 
-      overlays = [ overlay ];
+      overlays = [ ];
 
       # this is just nixpkgs.legacyPackages but with an overlay
       pkgs =
