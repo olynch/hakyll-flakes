@@ -2,7 +2,7 @@
   description = "Hakyll Website";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/20.09";
+    nixpkgs.url = "nixpkgs/21.05";
 
     hakyll-src = {
       url = "github:jaspervdj/hakyll/v4.13.4.1";
@@ -32,23 +32,24 @@
       overlay = (self: super: {
         haskellPackages = super.haskellPackages.extend (hsSelf: hsSuper: {
           hakyll = hsSuper.callCabal2nix "hakyll" "${hakyll-src}" { };
-          hakyll-sass = hsSuper.callCabal2nix "hakyll-sass" "${hakyll-sass-src}" { };
+          hakyll-sass =
+            hsSuper.callCabal2nix "hakyll-sass" "${hakyll-sass-src}" { };
         });
       });
 
       overlays = [ overlay ];
 
       # this is just nixpkgs.legacyPackages but with an overlay
-      pkgs = forAllSystems (system: import nixpkgs { inherit system overlays; });
-    in
-      {
-        inherit pkgs overlay overlays;
-        lib = rec {
-          mkBuilderPackage = args: (mkAllOutputs args).packages.builder;
-          mkWebsitePackage = args: (mkAllOutputs args).packages.website;
-          mkDevShell       = args: (mkAllOutputs args).devShell;
-          mkApp            = args: (mkAllOutputs args).defaultApp;
-          mkAllOutputs = import ./gen.nix pkgs;
-        };
+      pkgs =
+        forAllSystems (system: import nixpkgs { inherit system overlays; });
+    in {
+      inherit pkgs overlay overlays;
+      lib = rec {
+        mkBuilderPackage = args: (mkAllOutputs args).packages.builder;
+        mkWebsitePackage = args: (mkAllOutputs args).packages.website;
+        mkDevShell = args: (mkAllOutputs args).devShell;
+        mkApp = args: (mkAllOutputs args).defaultApp;
+        mkAllOutputs = import ./gen.nix pkgs;
       };
+    };
 }
