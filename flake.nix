@@ -14,7 +14,7 @@
     # };
   };
 
-  outputs = { self, nixpkgs, hakyll-src, hakyll-sass-src }:
+  outputs = { self, nixpkgs }:
     let
       # taken from nixpkgs flake.nix
       systems = [
