@@ -1,18 +1,7 @@
 {
   description = "Hakyll Website";
 
-  inputs = {
-    nixpkgs.url = "nixpkgs/21.05";
-
-    # hakyll-src = {
-    #   url = "github:jaspervdj/hakyll/v4.14.1.0";
-    #   flake = false;
-    # };
-    # hakyll-sass-src = {
-    #   url = "github:meoblast001/hakyll-sass/release-0.2.4";
-    #   flake = false;
-    # };
-  };
+  inputs = {};
 
   outputs = { self, nixpkgs }:
     let
