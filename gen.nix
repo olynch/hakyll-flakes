@@ -31,7 +31,12 @@ in rec {
   defaultPackage = packages.website;
   devShell = pkgs.mkShell {
     name = "${name}-env";
-    buildInputs = [ haskell-env ];
+
+    LANG = "en_US.UTF-8";
+    LC_ALL = "en_US.UTF-8";
+    LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
+
+    buildInputs = [ haskell-env builder ] ++ websiteBuildInputs;
 
     shellHook = ''
       export HAKYLL_ENV="development"
