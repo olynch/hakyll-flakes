@@ -36,7 +36,7 @@ in rec {
     LC_ALL = "en_US.UTF-8";
     LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
 
-    buildInputs = [ haskell-env builder ] ++ websiteBuildInputs;
+    buildInputs = [ haskell-env ] ++ websiteBuildInputs;
 
     shellHook = ''
       export HAKYLL_ENV="development"
