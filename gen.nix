@@ -3,6 +3,9 @@ pkgsSet:
 let
   pkgs = pkgsSet.${system};
   builder = pkgs.haskellPackages.callCabal2nix "${name}" "${builder-src}" { };
+  haskell-env = pkgs.haskellPackages.ghcWithHoogle (hp:
+    with hp;
+    [ haskell-language-server cabal-install ] ++ builder.buildInputs);
 in rec {
   packages = {
     inherit builder;
@@ -33,7 +36,7 @@ in rec {
     LC_ALL = "en_US.UTF-8";
     LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
 
-    buildInputs = websiteBuildInputs;
+    buildInputs = [ haskell-env ] ++ websiteBuildInputs;
 
     inputsFrom = [ builder.env ];
 
